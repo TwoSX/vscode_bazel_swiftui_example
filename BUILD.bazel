@@ -1,0 +1,72 @@
+load("@bazel_gazelle//:def.bzl", "gazelle", "gazelle_binary")
+
+load(
+    "@rules_xcodeproj//xcodeproj:defs.bzl",
+    "top_level_target",
+    "xcodeproj",
+)
+
+
+# Xcode
+
+xcodeproj(
+    name = "xcodeproj",
+    project_name = "App",
+    top_level_targets = [
+        top_level_target(
+            "//app",
+            target_environments = ["simulator"],
+        ),
+        top_level_target(
+            "//modules/DemoModule:DemoModuleTests",
+            target_environments = ["simulator"],
+        ),
+    ],
+)
+
+# tools
+
+genrule(
+    name = "lint",
+    srcs = [],
+    outs = ["lint.sh"],
+    cmd = """
+echo "set -e" > "$@"
+echo "./$(location @buildifier_prebuilt//:buildifier) -lint fix -mode fix -r \\$$BUILD_WORKSPACE_DIRECTORY" >> "$@"
+echo "./$(location @SwiftLint//:swiftlint) --fix \\$$BUILD_WORKSPACE_DIRECTORY" >> "$@"
+""",
+    executable = True,
+    tools = [
+        "@SwiftLint//:swiftlint",
+        "@buildifier_prebuilt//:buildifier",
+    ],
+)
+
+# MARK: - Gazelle
+
+gazelle_binary(
+    name = "gazelle_bin",
+    languages = [
+        "@bazel_skylib_gazelle_plugin//bzl",
+        "@rules_swift_package_manager//gazelle",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+gazelle(
+    name = "update_build_files",
+    args = [
+        "-swift_dependency_index=spm/deps_index.json",
+    ],
+    gazelle = ":gazelle_bin",
+)
+
+alias(
+    name = "swift_update_pkgs",
+    actual = "//spm:update_pkgs",
+)
+
+alias(
+    name = "swift_update_pkgs_to_latest",
+    actual = "//spm:update_pkgs_to_latest",
+)

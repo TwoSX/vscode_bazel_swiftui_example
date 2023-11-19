@@ -1,0 +1,34 @@
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+load("//tools:shared.bzl", "versions")
+
+# Code
+
+swift_library(
+    name = "DemoModuleLib",
+    srcs = glob(["sources/**/*.swift"]),
+    module_name = "DemoModule",
+    visibility = ["//modules:default_library_visibility"],
+    deps = [
+        
+    ],
+)
+
+# Tests
+
+swift_library(
+    name = "DemoModuleTestsLib",
+    testonly = True,
+    srcs = glob(["Tests/**/*.swift"]),
+    module_name = "DemoModuleTests",
+    deps = [
+        ":DemoModuleLib",
+    ],
+)
+
+ios_unit_test(
+    name = "DemoModuleTests",
+    minimum_os_version = versions.minimum_ios_version,
+    visibility = ["//modules:default_test_visibility"],
+    deps = [":DemoModuleTestsLib"],
+)

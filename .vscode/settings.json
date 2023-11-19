@@ -1,0 +1,14 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "files.exclude": {
+    ".bis": true,
+    "*.xcodeproj": false, // 设置为 true，可以隐藏 Xcode 项目
+    "bazel-*": true
+  },
+  "bis.simulator_cpu_string": "ios_sim_arm64",
+  "bis.auto_refresh_dummy_project_for_InjectionIII": true,
+  // 禁用自动跟踪 Package.swift, 使用 Bazel 进行管理
+  "swift.disableAutoResolve": true
+}

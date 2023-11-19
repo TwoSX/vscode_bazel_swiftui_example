@@ -1,0 +1,82 @@
+# Verbose Failures
+build --verbose_failures
+
+# Test output information
+test --test_output=errors --test_summary=detailed
+
+# Strict PATH. Helps prevent build cache invalidation due to PATH differences.
+build --incompatible_strict_action_env=true
+
+# Enable bzlmod
+common --enable_bzlmod
+build --@cgrindel_bazel_starlib//bzlmod:enabled
+
+# MapBox requires .netrc authentication to download their SDK.
+# common --credential_helper=*.mapbox.com=%workspace%/scripts/netrc_credential_helper/netrc_credential_helper.py
+
+build --experimental_cc_implementation_deps
+
+# Since there's no way to set the deployment version for swift_{binary,test},
+# this forces all targets' minimum macOS to Github Actions macOS version.
+build --macos_minimum_os=14.0
+
+## TEST
+
+# `bazel test` tries to build everything also by default, so skip that so the
+# *_library targets in examples/... aren't built (and fail since they are
+# platform specific).
+test --build_tests_only
+
+# Show detailed errors for test failures
+test --test_output=errors
+
+# Use llvm-cov instead of gcov (default).
+coverage --experimental_use_llvm_covmap
+
+# Remote Cache
+build:cache --bes_results_url=https://app.buildbuddy.io/invocation/
+build:cache --bes_backend=grpcs://remote.buildbuddy.io
+build:cache --remote_cache=grpcs://remote.buildbuddy.io
+build:cache --remote_download_toplevel # Helps remove network bottleneck if caching is enabled
+build:cache --remote_timeout=3600
+build:cache --experimental_remote_cache_async
+build:cache --experimental_remote_cache_compression
+
+# Recommended by BuildBuddy
+build --experimental_remote_build_event_upload=minimal
+build --noslim_profile 
+build --experimental_profile_include_target_label 
+build --experimental_profile_include_primary_output 
+build --nolegacy_important_outputs
+
+# Finish BES upload in the background. Disable BES upload when running.
+# Do not put these under the cache config as they do not pick up when running.
+build --bes_upload_mode=fully_async
+run --bes_backend=
+run --bes_results_url=
+
+# Configure Apple CC toolchain
+# https://github.com/bazelbuild/apple_support#toolchain-setup
+build --enable_platform_specific_config
+build:macos --apple_crosstool_top=@local_config_apple_cc//:toolchain
+build:macos --crosstool_top=@local_config_apple_cc//:toolchain
+build:macos --host_crosstool_top=@local_config_apple_cc//:toolchain
+
+# By default don't upload local results to remote cache, only CI does this.
+build --noremote_upload_local_results
+build:ci --remote_upload_local_results
+
+# CI Settings for Bazel
+
+# Output information about the flags that are applied
+common:ci --announce_rc
+
+# Disable color
+common:ci --color=no
+
+# Information about Github Action hosted runners
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources
+build:ci --local_cpu_resources=2
+
+build --cxxopt='-std=c++14'
+

@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "sswg.swift-lang",
+    "bazelbuild.vscode-bazel",
+    "zxz-moe.zxz-moe-bis",
+    "vknabel.vscode-apple-swift-format",
+    "vknabel.vscode-swiftlint"
+  ]
+}

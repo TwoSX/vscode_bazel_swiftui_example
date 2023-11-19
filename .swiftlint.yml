@@ -1,0 +1,9 @@
+excluded:
+  - spm/.build
+  - external
+  - bazel-*
+included:
+  - app
+  - modules
+
+  

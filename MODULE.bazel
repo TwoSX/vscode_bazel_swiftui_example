@@ -1,0 +1,85 @@
+module(
+    name = "vscode_bazel_swiftui_example",
+    repo_name = "vscode_bazel_swiftui_example",
+    version="0.0.1",
+)
+
+
+bazel_dep(name = "cgrindel_bazel_starlib", version = "0.18.1")
+
+bazel_dep(name = "bazel_skylib", version = "1.5.0")
+bazel_dep(name = "rules_xcodeproj", version = "1.13.0")
+
+bazel_dep(
+    name = "apple_support",
+    version = "1.11.1",
+    repo_name = "build_bazel_apple_support",
+)
+bazel_dep(
+    name = "rules_swift",
+    version = "1.13.0",
+    repo_name = "build_bazel_rules_swift",
+)
+bazel_dep(
+    name = "rules_apple",
+    version = "3.1.1",
+    repo_name = "build_bazel_rules_apple",
+)
+
+apple_cc_configure = use_extension("@build_bazel_apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
+use_repo(apple_cc_configure, "local_config_apple_cc")
+
+# libraries
+bazel_dep(name = "swift_argument_parser", version = "1.2.1")
+
+bazel_dep(
+    name = "rules_swift_package_manager",
+    version = "0.0.0",
+)
+local_path_override(
+    module_name = "rules_swift_package_manager",
+    path = "/Users/twosx/dev/ios/rules_swift_package_manager",
+)
+
+bazel_dep(
+    name = "buildifier_prebuilt",
+    version = "6.3.3",
+    dev_dependency = True,
+)
+
+bazel_dep(
+    name = "bazel_skylib_gazelle_plugin",
+    version = "1.5.0",
+    dev_dependency = True,
+)
+
+non_module_dependencies = use_extension("//tools:extensions.bzl", "non_module_dependencies")
+use_repo(non_module_dependencies, "SwiftLint")
+
+bazel_dep(
+    name = "gazelle",
+    version = "0.32.0",
+    dev_dependency = True,
+    repo_name = "bazel_gazelle",
+)
+
+bazel_dep(name = "bis", version = "0.3.4", dev_dependency = True)
+archive_override(
+    module_name = "bis",
+    urls = "https://github.com/xinzhengzhang/bis/archive/refs/tags/0.3.4.tar.gz",
+    strip_prefix = "bis-0.3.4"
+)
+
+# swift_deps START
+swift_deps = use_extension(
+    "@rules_swift_package_manager//:extensions.bzl",
+    "swift_deps",
+)
+swift_deps.from_file(
+    deps_index = "//spm:deps_index.json",
+)
+use_repo(
+    swift_deps,
+    "swiftpkg_inject",
+)
+# swift_deps END

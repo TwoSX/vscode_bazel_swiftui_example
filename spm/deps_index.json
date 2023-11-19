@@ -1,0 +1,38 @@
+{
+  "direct_dep_identities": [
+    "inject"
+  ],
+  "modules": [
+    {
+      "name": "Inject",
+      "c99name": "Inject",
+      "src_type": "swift",
+      "label": "@swiftpkg_inject//:Sources_Inject",
+      "package_identity": "inject",
+      "product_memberships": [
+        "Inject"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "identity": "inject",
+      "name": "Inject",
+      "type": "library",
+      "target_labels": [
+        "@swiftpkg_inject//:Sources_Inject"
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "name": "swiftpkg_inject",
+      "identity": "inject",
+      "remote": {
+        "commit": "2057eb9819813b89fd2107e99608d2d20890d9c5",
+        "remote": "https://github.com/krzysztofzablocki/Inject",
+        "version": "1.2.4"
+      }
+    }
+  ]
+}
