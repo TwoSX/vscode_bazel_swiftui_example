@@ -11,8 +11,9 @@ build --incompatible_strict_action_env=true
 common --enable_bzlmod
 build --@cgrindel_bazel_starlib//bzlmod:enabled
 
-# MapBox requires .netrc authentication to download their SDK.
-# common --credential_helper=*.mapbox.com=%workspace%/scripts/netrc_credential_helper/netrc_credential_helper.py
+# MapBox requires .netrc authentication to download their SDK. 
+# Configure .netrc file according to the tutorial. https://docs.mapbox.com/ios/maps/guides/install/#configure-credentials 
+common --credential_helper=*.mapbox.com=%workspace%/tools/netrc_credential_helper/netrc_credential_helper.py
 
 build --experimental_cc_implementation_deps
 
