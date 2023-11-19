@@ -33,6 +33,9 @@ brew install swiftlint
 
 # iOS 设备管理
 brew install ios-deploy
+
+# 格式化工具
+brew install swift-format
 ```
 
 下载最新版本 InjectionIII.app.zip

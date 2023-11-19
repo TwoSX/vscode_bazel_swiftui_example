@@ -1,7 +1,5 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
+  "editor.formatOnSave": true,
   "files.exclude": {
     ".bis": true,
     "*.xcodeproj": false, // 设置为 true，可以隐藏 Xcode 项目
