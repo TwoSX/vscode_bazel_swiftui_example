@@ -1,9 +1,8 @@
 module(
     name = "vscode_bazel_swiftui_example",
     repo_name = "vscode_bazel_swiftui_example",
-    version="0.0.1",
+    version = "0.0.1",
 )
-
 
 bazel_dep(name = "cgrindel_bazel_starlib", version = "0.18.1")
 
@@ -32,14 +31,7 @@ use_repo(apple_cc_configure, "local_config_apple_cc")
 # libraries
 bazel_dep(name = "swift_argument_parser", version = "1.2.1")
 
-bazel_dep(
-    name = "rules_swift_package_manager",
-    version = "0.0.0",
-)
-local_path_override(
-    module_name = "rules_swift_package_manager",
-    path = "/Users/twosx/dev/ios/rules_swift_package_manager",
-)
+bazel_dep(name = "rules_swift_package_manager", version = "0.21.0")
 
 bazel_dep(
     name = "buildifier_prebuilt",
@@ -67,7 +59,7 @@ bazel_dep(name = "bis", version = "0.3.4", dev_dependency = True)
 archive_override(
     module_name = "bis",
     urls = "https://github.com/xinzhengzhang/bis/archive/refs/tags/0.3.4.tar.gz",
-    strip_prefix = "bis-0.3.4"
+    strip_prefix = "bis-0.3.4",
 )
 
 # swift_deps START
